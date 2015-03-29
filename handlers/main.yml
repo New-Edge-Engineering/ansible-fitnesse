@@ -1,0 +1,5 @@
+---
+- name: restart fitnesse
+  service:
+    name: fitnesse
+    state: restarted

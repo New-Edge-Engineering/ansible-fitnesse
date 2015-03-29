@@ -1,0 +1,3 @@
+---
+# install fitnesse server
+- include: install.yml
