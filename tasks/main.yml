@@ -1,3 +1,5 @@
 ---
 # install fitnesse server
 - include: install.yml
+- include: plugins.yml
+  when: fitnesse_plugins|length > 0

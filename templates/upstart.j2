@@ -8,7 +8,7 @@ stop on runlevel [!2345]
 setuid {{ fitnesse_username }}
 setgid {{ fitnesse_group }}
 
-chdir {{ fitnesse_path }}/bin/
+chdir {{ fitnesse_path }}
 
 env JAVA_APP=fitnesse-standalone.jar
 env JAVA_OPTS="-Xms{{ fitnesse_xms|default('128M') }} -Xmx{{ fitnesse_xmx|default('512M') }} -server"

@@ -19,7 +19,7 @@
 # File system structure
 - name: FitNesse | Ensure install directory exists
   file:
-    path: "{{ fitnesse_path }}/bin"
+    path: "{{ fitnesse_path }}"
     state: directory
     recurse: yes
     owner: "{{ fitnesse_username }}"
@@ -38,9 +38,12 @@
 - name: FitNesse | Download application universal package
   get_url:
     url: "{{ fitnesse_url }}"
-    dest: "{{ fitnesse_path }}/bin/fitnesse-standalone.jar"
+    dest: "{{ fitnesse_path }}/fitnesse-standalone.jar"
+    force: yes
     group: "{{ fitnesse_group }}"
     owner: "{{ fitnesse_username }}"
+  notify:
+    - restart fitnesse
 
 # Service installation
 - name: FitNesse | Ensure the upstart configuration exists on the system
