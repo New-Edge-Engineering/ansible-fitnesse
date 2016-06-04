@@ -13,8 +13,8 @@ chdir {{ fitnesse_path }}
 env JAVA_APP=fitnesse-standalone.jar
 env JAVA_OPTS="-Xms{{ fitnesse_xms|default('128M') }} -Xmx{{ fitnesse_xmx|default('512M') }} -server"
 env APP_OPTS="-p {{ fitnesse_port }}"
-env LOGFILE=/var/log/fitnesse/java.log
+env LOG_DIR=/var/log/fitnesse/logs
 
 script
-    exec /usr/bin/java $JAVA_OPTS -jar $JAVA_APP $APP_OPTS >> $LOGFILE 2>&1
+    exec /usr/bin/java $JAVA_OPTS -jar $JAVA_APP $APP_OPTS -l $LOG_DIR
 end script
