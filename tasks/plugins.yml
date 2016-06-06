@@ -16,6 +16,16 @@
     # - plugins
 
 - name: ensure plugin source exist
+  apt:
+    pkg: git
+    state: present
+  when: item.repo_url is defined
+  with_items: fitnesse_plugins
+  tags:
+    - fitnesse
+    - plugins
+
+- name: ensure plugin source exist
   git:
     repo: "{{ item.repo_url }}"
     dest: "/tmp/fitnesse/{{ (item.repo_url.split('/')|last)[:-4] }}/"
