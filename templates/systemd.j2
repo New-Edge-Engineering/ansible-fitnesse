@@ -1,0 +1,14 @@
+[Unit]
+Description=FitNesse acceptance testing framework.
+Wants=network-online.target
+After=syslog.target network-online.target
+
+[Service]
+WorkingDirectory={{ fitnesse_path }}
+User={{ fitnesse_username }}
+Group={{ fitnesse_group }}
+ExecStart=/usr/bin/java -Xms{{ fitnesse_xms|default('128M') }} -Xmx{{ fitnesse_xmx|default('512M') }} -server -jar fitnesse-standalone.jar -p {{ fitnesse_port }} -l /var/log/fitnesse
+StandardOutput=syslog
+
+[Install]
+WantedBy=multi-user.target

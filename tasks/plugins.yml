@@ -20,7 +20,7 @@
     pkg: git
     state: present
   when: item.repo_url is defined
-  with_items: fitnesse_plugins
+  with_items: "{{ fitnesse_plugins }}"
   tags:
     - fitnesse
     - plugins
@@ -30,7 +30,7 @@
     repo: "{{ item.repo_url }}"
     dest: "/tmp/fitnesse/{{ (item.repo_url.split('/')|last)[:-4] }}/"
   when: item.repo_url is defined
-  with_items: fitnesse_plugins
+  with_items: "{{ fitnesse_plugins }}"
   tags:
     - fitnesse
     - plugins
@@ -40,7 +40,7 @@
     path: "/tmp/fitnesse/{{ (item.repo_url.split('/')|last)[:-4] }}/pom.xml"
   register: fitnesse_maven_plugins
   when: item.repo_url is defined
-  with_items: fitnesse_plugins
+  with_items: "{{ fitnesse_plugins }}"
   tags:
     - fitnesse
     - plugins
@@ -50,14 +50,14 @@
     pkg: maven
     state: present
   when: item.stat is defined and item.stat.path[-7:] == 'pom.xml'
-  with_items: fitnesse_maven_plugins.results
+  with_items: "{{ fitnesse_maven_plugins.results }}"
 
 - name: ensure maven plugin jars are built
   shell: mvn package
   args:
     chdir: "{{ item.stat.path[:-7] }}"
   when: item.stat is defined and item.stat.path[-7:] == 'pom.xml'
-  with_items: fitnesse_maven_plugins.results
+  with_items: "{{ fitnesse_maven_plugins.results }}"
   tags:
     - fitnesse
     - plugins
@@ -69,12 +69,12 @@
     use_regex: true
   register: fitnesse_maven_jars
   when: item.repo_url is defined
-  with_items: fitnesse_plugins
+  with_items: "{{ fitnesse_plugins }}"
   tags:
     - fitnesse
     - plugins
 
-- debug: var=fitnesse_maven_jars.results
+- debug: var="{{ fitnesse_maven_jars.results }}"
 
 # - name: ensure ossrhUsername is declared
   # lineinfile:
@@ -98,7 +98,7 @@
   # args:
     # chdir: "/tmp/fitnesse/{{ (item.repo.url.split('/')|last)[:-4] }}/"
   # when: item.build is defined and item.build.type == 'gradles'
-  # with_items: fitnesse_plugins
+  # with_items: "{{ fitnesse_plugins }}"
   # tags:
     # - fitnesse
     # - plugins
@@ -111,7 +111,7 @@
     group: "{{ fitnesse_group }}"
     remote_src: true
   when: item.files is defined
-  with_items: fitnesse_maven_jars.results
+  with_items: "{{ fitnesse_maven_jars.results }}"
   tags:
     - fitnesse
     - plugins
@@ -123,7 +123,7 @@
     owner: "{{ fitnesse_username }}"
     group: "{{ fitnesse_group }}"
   when: item.url is defined
-  with_items: fitnesse_plugins
+  with_items: "{{ fitnesse_plugins }}"
   tags:
     - fitnesse
     - plugins
