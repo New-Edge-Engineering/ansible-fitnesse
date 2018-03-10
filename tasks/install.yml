@@ -9,9 +9,8 @@
   user:
     name: "{{ fitnesse_username }}"
     groups: "{{ fitnesse_group }}"
-    createhome: no
+    home: "{{ fitnesse_path }}"
     shell: /bin/bash
-    system: yes
     state: present
 
 # File system structure

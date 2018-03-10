@@ -1,16 +1,19 @@
 ---
 galaxy_info:
   author: Matthew Green
-  company: New Edge Engineering
-  description: install ansible
+  company: New Edge Engineering Limited
+  description: Install and configure FitNesse
   min_ansible_version: 1.5
   license: MIT
   platforms:
   - name: Ubuntu
     versions:
-    - precise
+      - precise
+  - name: CentOS
+    versions:
+      - 7
   categories:
-  - system
-  - management
+    - system
+    - management
 
 dependencies: []

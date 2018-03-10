@@ -1,0 +1,108 @@
+---
+- name: plugin git | ensure .ssh directory exists
+  file:
+    group: fitnesse
+    mode: 0755
+    owner: fitnesse
+    path: "{{ fitnesse_path }}/.ssh"
+    state: directory
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | create existing private ssh key
+  copy:
+    content: "{{ fitnesse_private_ssh_key }}"
+    group: fitnesse
+    mode: 0600
+    owner: fitnesse
+    dest: "{{ fitnesse_path }}/.ssh/id_rsa"
+  when: not (
+          (fitnesse_private_ssh_key is undefined) or
+          (fitnesse_private_ssh_key is none) or
+          (fitnesse_private_ssh_key|trim == '')
+        )
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | generate a ssh key
+  user:
+    name: fitnesse
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+  when: fitnesse_private_ssh_key is undefined
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | ensure git package is installed
+  package:
+    name: git
+    state: present
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | ensure email is set for git config
+  git_config:
+    name: user.email
+    scope: global
+    value: "fitnesse@{{ fitnesse_email_fqdn }}"
+  become: yes
+  become_user: fitnesse
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | ensure email is set for git config
+  git_config:
+    name: user.name
+    scope: global
+    value: fitnesse
+  become: yes
+  become_user: fitnesse
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | ensure email is set for git config
+  git_config:
+    name: push.default
+    scope: global
+    value: simple
+  become: yes
+  become_user: fitnesse
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | ensure git saas public key exist in known hosts
+  known_hosts:
+    name: "{{ item }}"
+    key: "{{ lookup('pipe', 'ssh-keyscan -t rsa ' + item) }}"
+    state: present
+  become_user: fitnesse
+  with_items: "{{ fitnesse_git_saas }}"
+  tags:
+    - fitnesse
+    - plugin
+    - git
+
+- name: plugin git | ensure git respository is cloned
+  git:
+    repo: "ssh://{{ fitnesse_plugins_git_repo_uri }}"
+    dest: "{{ fitnesse_path }}/FitNesseRoot"
+    update: no
+  become_user: fitnesse
+  tags:
+    - fitnesse
+    - plugin
+    - git

@@ -7,4 +7,6 @@ fitnesse_url: "http://fitnesse.org/fitnesse-standalone.jar?responder=releaseDown
 fitnesse_port: 8080
 fitnesse_xms: 128M
 fitnesse_xmx: 512M
+fitnesse_email_fqdn: example.com
+fitnesse_private_ssh_key: "{{ vault_jenkins_ssh_key }}"
 fitnesse_plugins: [] # should be made up of repo with type and url

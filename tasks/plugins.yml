@@ -9,12 +9,6 @@
     - fitnesse
     - plugins
 
-# - name: ensure fitnesse jar is installed for maven builds
-  # shell: "mvn install:install-file -Dfile={{ fitnesse_path }}/fitnesse-standalone.jar -DgroupId=org.fitnesse -DartifactId=fitnesse -Dversion=20150927-SNAPSHOT -Dpackaging=jar"
-  # tags:
-    # - fitnesse
-    # - plugins
-
 - name: ensure plugin source exist
   apt:
     pkg: git
@@ -74,7 +68,7 @@
     - fitnesse
     - plugins
 
-- debug: var="{{ fitnesse_maven_jars.results }}"
+# - debug: var="{{ fitnesse_maven_jars.results }}"
 
 # - name: ensure ossrhUsername is declared
   # lineinfile:

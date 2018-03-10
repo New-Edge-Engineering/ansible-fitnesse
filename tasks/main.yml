@@ -3,3 +3,5 @@
 - include_tasks: install.yml
 - include_tasks: plugins.yml
   when: fitnesse_plugins|length > 0
+- include_tasks: plugins_git.yml
+  when: fitnesse_plugins_git|bool == true
